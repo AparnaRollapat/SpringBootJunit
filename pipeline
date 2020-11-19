@@ -1,0 +1,14 @@
+#! /bin/sh groovy
+
+node {
+
+    stage 'Checkout'
+    git credentialsId: '297b1438-0dc2-42e1-806c-4b300219f04b', url: 'git@github.com:AparnaRollapat/SpringBootJunit.git'
+
+    sh "git rev-parse HEAD > commit"
+    def git_commit = readFile('commit').trim()
+	
+    stage 'Docker build'
+    sh "builder build -f ./Dockerfile -l -p $app_name $git_commit"
+
+}
